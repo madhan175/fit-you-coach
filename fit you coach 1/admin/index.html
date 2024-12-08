@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <style>
+        /* Admin Dashboard CSS */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: margin-left 0.5s;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto 1fr; /* Sidebar + Main content */
+        }
+
+        .header {
+            background-color: #4CAF50; /* Header background color */
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .menu-icon {
+            cursor: pointer;
+        }
+
+        #sidebar {
+            width: 0; /* Initially hidden */
+            height: 100%;
+            position: fixed; /* Fixed positioning */
+            left: 0;
+            top: 0;
+            background-color: #333; /* Sidebar background color */
+            overflow-x: hidden; /* Prevent horizontal overflow */
+            transition: 0.5s; /* Smooth transition for opening/closing */
+            z-index: 1; /* Keep it on top */
+        }
+
+        .sidebar-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #444; /* Sidebar title background color */
+            color: white;
+        }
+
+        .sidebar-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar-list-item {
+            padding: 15px;
+        }
+
+        .sidebar-list-item a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-list-item a:hover {
+            background-color: #575757; /* Hover effect */
+        }
+
+        .main-container {
+            padding: 20px;
+        }
+
+        .main-title h2 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="menu-icon" onclick="openSidebar()">
+                <span class="material-icons-outlined">menu</span>
+            </div>
+            <div class="header-left">
+                <span class="material-icons-outlined">search</span>
+            </div>
+            <div class="header-right">
+                <span class="material-icons-outlined">notifications</span>
+                <span class="material-icons-outlined">email</span>
+                <span class="material-icons-outlined">account_circle</span>
+            </div>
+        </header>
+        <!-- End Header -->
+
+        <!-- Sidebar -->
+        <aside id="sidebar">
+            <div class="sidebar-title">
+                <div class="sidebar-brand">
+                    <span class="material-icons-outlined">shopping_cart</span> STORE
+                </div>
+                <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+            </div>
+
+            <ul class="sidebar-list">
+                <li class="sidebar-list-item">
+                    <a href="pages/dashoards.html">
+                        <span class="material-icons-outlined"></span> Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="pages/products.html">
+                        <span class="material-icons-outlined"></span> Products
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="pages/categories.html">
+                        <span class="material-icons-outlined"></span> Categories
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="pages/inventory.html">
+                        <span class="material-icons-outlined"></span> Inventory
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="pages/reports.html">
+                        <span class="material-icons-outlined"></span> Reports
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="pages/settings.html">
+                        <span class="material-icons-outlined"></span> Settings
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="pages/sports1.html">
+                        <span class="material-icons-outlined"></span> Sports1
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        <!-- End Sidebar -->
+
+        <main class="main-container">
+            <div class="main-title">
+                <h2>WELCOME TO THE ADMIN DASHBOARD</h2>
+            </div>
+            <p>Select a section from the sidebar to manage your store.</p>
+        </main>
+        <!-- End Main -->
+    </div>
+
+    <script>
+        // Scripts for opening and closing sidebar
+        function openSidebar() {
+            document.getElementById('sidebar').style.width = '250px'; // Set the width for opening
+            document.body.style.marginLeft = '250px'; // Shift main content
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').style.width = '0'; // Hide the sidebar
+            document.body.style.marginLeft = '0'; // Shift main content back
+        }
+    </script>
+</body>
+</html>

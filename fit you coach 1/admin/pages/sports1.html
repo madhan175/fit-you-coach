@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Went Coaches</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        nav {
+            background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        nav h1 {
+            color: white;
+            margin: 0;
+        }
+
+        #coaches-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            justify-content: space-around;
+        }
+
+        .coach-card {
+            background: rgb(255, 110, 110);
+            border-radius: 12px;
+            width: calc(30% - 40px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .coach-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .coach-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .coach-card h4 {
+            margin: 15px 0 10px;
+            font-size: 1.5em;
+            color: #fff;
+        }
+
+        .coach-card p {
+            margin: 5px 0;
+            font-size: 1.1em;
+            color: #fff;
+        }
+
+        .navigate-btn, .back-btn {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .navigate-btn:hover, .back-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            display: none; /* Hide profile by default */
+        }
+
+        .profile-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .profile-container h2 {
+            margin-top: 20px;
+            font-size: 2em;
+            color: #ff4d4d;
+        }
+
+        .profile-container p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .question-answer {
+            margin-top: 20px;
+        }
+
+        .question-answer h3 {
+            font-size: 1.5em;
+            color: #007BFF;
+        }
+
+        .question-answer p {
+            font-size: 1.1em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h1>Went Coaches</h1>
+</nav>
+
+<div id="coaches-container">
+    <!-- Coach Cards will be rendered here -->
+</div>
+
+<div class="profile-container" id="profile">
+    <!-- Coach profile content will be dynamically generated here -->
+</div>
+
+<button class="navigate-btn" onclick="navigateBack()">Back to Coaches</button>
+
+<script>
+    // Sample data for went coaches
+    const wentCoaches = [
+        {
+            name: "John Doe",
+            specialization: "Fitness Training",
+            experience: 5,
+            image: "https://via.placeholder.com/300",
+            whyChooseMe: "I focus on functional fitness and personalized training.",
+            specialAboutMe: "I have a unique approach that combines strength and flexibility."
+        },
+        {
+            name: "Jane Smith",
+            specialization: "Nutrition Coaching",
+            experience: 3,
+            image: "https://via.placeholder.com/300",
+            whyChooseMe: "I create tailored meal plans based on individual needs.",
+            specialAboutMe: "My experience in sports nutrition makes my approach special."
+        },
+        {
+            name: "Mark Johnson",
+            specialization: "Yoga Instructor",
+            experience: 7,
+            image: "https://via.placeholder.com/300",
+            whyChooseMe: "I help you find balance in mind and body through yoga.",
+            specialAboutMe: "I incorporate mindfulness techniques into my sessions."
+        }
+    ];
+
+    // Function to render coach cards
+    function renderCoachCards() {
+        const container = document.getElementById('coaches-container');
+        container.innerHTML = ''; // Clear the container
+
+        wentCoaches.forEach(coach => {
+            const card = document.createElement('div');
+            card.classList.add('coach-card');
+            card.innerHTML = `
+                <img src="${coach.image}" alt="${coach.name}">
+                <h4>${coach.name}</h4>
+                <p>Specialization: ${coach.specialization}</p>
+                <p>Experience: ${coach.experience} years</p>
+            `;
+            // Add click event to redirect to the coach profile
+            card.onclick = () => showCoachProfile(coach);
+            container.appendChild(card);
+        });
+    }
+
+    // Function to show the coach profile
+    function showCoachProfile(coach) {
+        const profileContainer = document.getElementById('profile');
+        profileContainer.style.display = 'block'; // Show profile
+        profileContainer.innerHTML = `
+            <img src="${coach.image}" alt="${coach.name}">
+            <h2>${coach.name}</h2>
+            <p><strong>Specialization:</strong> ${coach.specialization}</p>
+            <p><strong>Experience:</strong> ${coach.experience} years</p>
+            <div class="question-answer">
+                <h3>Why choose me?</h3>
+                <p>${coach.whyChooseMe}</p>
+            </div>
+            <div class="question-answer">
+                <h3>What is special about me?</h3>
+                <p>${coach.specialAboutMe}</p>
+            </div>
+        `;
+        // Hide coach cards
+        document.getElementById('coaches-container').style.display = 'none';
+    }
+
+    // Function to navigate back to coach list
+    function navigateBack() {
+        document.getElementById('coaches-container').style.display = 'flex'; // Show coach cards
+        document.getElementById('profile').style.display = 'none'; // Hide profile
+    }
+
+    // Initial render of coach cards
+    renderCoachCards();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Manage Coaches & Bookings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav h1 {
+            margin: 0;
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        .coaches-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .coach-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            width: calc(33% - 20px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .coach-card img {
+            width: 100%;
+            border-radius: 5px;
+            height: auto;
+        }
+
+        .coach-card h3 {
+            margin: 10px 0;
+        }
+
+        .coach-card button {
+            padding: 10px 15px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .view-profile {
+            background-color: #007BFF;
+        }
+
+        .view-profile:hover {
+            background-color: #0056b3;
+        }
+
+        .book {
+            background-color: #28a745;
+        }
+
+        .book:hover {
+            background-color: #218838;
+        }
+
+        .edit {
+            background-color: #ffc107;
+        }
+
+        .edit:hover {
+            background-color: #e0a800;
+        }
+
+        .delete {
+            background-color: #dc3545;
+        }
+
+        .delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Additional styling for tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .form-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .form-container input, .form-container textarea {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .form-container button:hover {
+            background-color: #218838;
+        }
+
+        /* Button to navigate to user page */
+        .navigate-btn {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .navigate-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>Admin Panel - Manage Coaches & Bookings</h1>
+    </nav>
+
+    <section>
+        <h2>Manage Coaches</h2>
+        <div class="coaches-container" id="admin-coaches">
+            <!-- Dynamic coach cards will be inserted here -->
+        </div>
+
+        <!-- Add/Edit Form -->
+        <div class="form-container">
+            <h2 id="form-title">Add New Coach</h2>
+            <input type="text" id="name" placeholder="Coach Name" required>
+            <input type="text" id="specialization" placeholder="Specialization" required>
+            <input type="text" id="experience" placeholder="Experience (years)" required>
+            <input type="text" id="price" placeholder="Price" required>
+            <textarea id="aboutMe" placeholder="About Me" required></textarea>
+            <input type="file" id="image" accept="image/*" required>
+            <input type="file" id="video" accept="video/*" required> <!-- Video input -->
+            <button id="submit-btn" onclick="submitCoach()">Add Coach</button>
+        </div>
+        
+        <h2>View Bookings</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>Goal</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="bookings-table-body">
+                <!-- Booking data will be inserted here -->
+            </tbody>
+        </table>
+
+        <!-- Button to navigate to user page -->
+        <button class="navigate-btn" onclick="navigateToUserPage()">Explore Coaches</button>
+    </section>
+
+    <script>
+        let editIndex = -1; // To track if we're editing a coach
+
+        // Function to render coaches as cards
+        function renderCoaches() {
+            const coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+            const coachesContainer = document.getElementById('admin-coaches');
+            coachesContainer.innerHTML = ''; // Clear container
+
+            coaches.forEach((coach, index) => {
+                const card = document.createElement('div');
+                card.classList.add('coach-card');
+
+                const img = document.createElement('img');
+                img.src = coach.image;
+                img.alt = coach.name;
+                card.appendChild(img);
+
+                const name = document.createElement('h3');
+                name.textContent = coach.name;
+                card.appendChild(name);
+
+                const specialization = document.createElement('p');
+                specialization.textContent = `Specialization: ${coach.specialization}`;
+                card.appendChild(specialization);
+
+                const price = document.createElement('p');
+                price.textContent = `Price: $${coach.price}`;
+                card.appendChild(price);
+
+                const actions = document.createElement('div');
+                actions.innerHTML = `
+                    <button class="view-profile" onclick="viewCoachProfile(${index})">View Profile</button>
+                    <button class="edit" onclick="editCoach(${index})">Edit</button>
+                    <button class="delete" onclick="deleteCoach(${index})">Delete</button>
+                `;
+                card.appendChild(actions);
+
+                coachesContainer.appendChild(card);
+            });
+        }
+
+        // Function to load bookings and render them in the table
+        function loadBookings() {
+            const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+            const tableBody = document.getElementById('bookings-table-body');
+
+            tableBody.innerHTML = ''; // Clear previous rows
+            bookings.forEach(booking => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${booking.name}</td>
+                    <td>${booking.phone}</td>
+                    <td>${booking.email}</td>
+                    <td>${booking.age}</td>
+                    <td>${booking.gender}</td>
+                    <td>${booking.height}</td>
+                    <td>${booking.weight}</td>
+                    <td>${booking.goal}</td>
+                    <td>${booking.date}</td>
+                    <td>${booking.time}</td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to handle image and video upload and convert them to Base64
+        function handleFileUpload(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                callback(event.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Function to submit or update coach with video
+        function submitCoach() {
+            const name = document.getElementById('name').value;
+            const specialization = document.getElementById('specialization').value;
+            const experience = document.getElementById('experience').value;
+            const price = document.getElementById('price').value;
+            const aboutMe = document.getElementById('aboutMe').value;
+            const imageInput = document.getElementById('image');
+            const videoInput = document.getElementById('video');
+            const coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+
+            if (editIndex === -1) { // Adding new coach
+                handleFileUpload(imageInput.files[0], (image) => {
+                    handleFileUpload(videoInput.files[0], (video) => {
+                        const newCoach = { name, specialization, experience, price, aboutMe, image, video };
+                        coaches.push(newCoach);
+                        localStorage.setItem('coaches', JSON.stringify(coaches));
+                        renderCoaches();
+                    });
+                });
+            } else { // Editing existing coach
+                handleFileUpload(imageInput.files[0], (image) => {
+                    handleFileUpload(videoInput.files[0], (video) => {
+                        coaches[editIndex] = { name, specialization, experience, price, aboutMe, image, video };
+                        localStorage.setItem('coaches', JSON.stringify(coaches));
+                        renderCoaches();
+                        editIndex = -1; // Reset edit index
+                    });
+                });
+            }
+
+            // Reset form fields
+            document.getElementById('name').value = '';
+            document.getElementById('specialization').value = '';
+            document.getElementById('experience').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('aboutMe').value = '';
+        }
+
+        // Function to edit existing coach
+        function editCoach(index) {
+            const coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+            const coach = coaches[index];
+            document.getElementById('name').value = coach.name;
+            document.getElementById('specialization').value = coach.specialization;
+            document.getElementById('experience').value = coach.experience;
+            document.getElementById('price').value = coach.price;
+            document.getElementById('aboutMe').value = coach.aboutMe;
+
+            editIndex = index; // Set edit index
+            document.getElementById('form-title').textContent = 'Edit Coach';
+            document.getElementById('submit-btn').textContent = 'Update Coach';
+        }
+
+        // Function to delete coach
+        function deleteCoach(index) {
+            const coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+            coaches.splice(index, 1);
+            localStorage.setItem('coaches', JSON.stringify(coaches));
+            renderCoaches();
+        }
+
+        // Function to view coach profile
+        function viewCoachProfile(index) {
+            const coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+            const coach = coaches[index];
+            alert(`Name: ${coach.name}\nSpecialization: ${coach.specialization}\nExperience: ${coach.experience}\nPrice: $${coach.price}\nAbout Me: ${coach.aboutMe}`);
+        }
+
+        // Function to navigate to user page
+        function navigateToUserPage() {
+            alert("Navigating to user page...");
+            // Implement navigation logic here, e.g., window.location.href = 'user_page.html';
+        }
+
+        // Initialize data on page load
+        window.onload = function() {
+            renderCoaches();
+            loadBookings();
+        };
+    </script>
+</body>
+</html>

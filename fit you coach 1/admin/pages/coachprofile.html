@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Page - Explore Coaches</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        nav h1 {
+            margin: 0;
+        }
+        section {
+            padding: 20px;
+        }
+        .coach-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px;
+            background-color: white;
+            border-radius: 5px;
+            display: inline-block;
+            width: calc(25% - 40px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .coach-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>User Page - Explore Coaches</h1>
+    </nav>
+
+    <section id="coach-list">
+        <h2>Available Coaches</h2>
+        <div id="coaches-container"></div>
+    </section>
+
+    <script>
+        // Sample coaches data
+        const coaches = [
+            {
+                name: 'John Doe',
+                specialization: 'Nutrition',
+                experience: '5',
+                image: 'https://via.placeholder.com/200',
+                details: 'John specializes in nutrition and healthy eating.'
+            },
+            {
+                name: 'Jane Smith',
+                specialization: 'Fitness',
+                experience: '3',
+                image: 'https://via.placeholder.com/200',
+                details: 'Jane is a certified fitness trainer with a passion for helping others.'
+            },
+            {
+                name: 'Bob Johnson',
+                specialization: 'Yoga',
+                experience: '4',
+                image: 'https://via.placeholder.com/200',
+                details: 'Bob has years of experience in yoga and mindfulness.'
+            },
+            {
+                name: 'Alice Brown',
+                specialization: 'Personal Training',
+                experience: '6',
+                image: 'https://via.placeholder.com/200',
+                details: 'Alice focuses on personalized training programs for her clients.'
+            }
+        ];
+
+        // Store sample data in localStorage
+        localStorage.setItem('coaches', JSON.stringify(coaches));
+
+        // Function to render coaches from localStorage
+        function renderCoaches() {
+            const coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+            const coachesContainer = document.getElementById('coaches-container');
+            coachesContainer.innerHTML = ''; // Clear container
+
+            coaches.forEach((coach) => {
+                const coachCard = document.createElement('div');
+                coachCard.className = 'coach-card';
+
+                const coachName = document.createElement('h3');
+                coachName.textContent = coach.name;
+
+                const coachImage = document.createElement('img');
+                coachImage.src = coach.image;
+
+                const coachDetails = document.createElement('p');
+                coachDetails.textContent = `Specialization: ${coach.specialization}, Experience: ${coach.experience} years`;
+
+                // Add click event to navigate to coach profile
+                coachCard.onclick = function () {
+                    window.location.href = `coachProfile.html?name=${encodeURIComponent(coach.name)}`;
+                };
+
+                coachCard.appendChild(coachImage);
+                coachCard.appendChild(coachName);
+                coachCard.appendChild(coachDetails);
+                coachesContainer.appendChild(coachCard);
+            });
+        }
+
+        // Call render function on page load
+        renderCoaches();
+    </script>
+</body>
+</html>

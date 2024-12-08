@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet"> <!-- Link to additional CSS -->
+    <style>
+        /* Admin Dashboard CSS */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: margin-left 0.5s;
+            background-color: #f4f4f4; /* Set background color for the body */
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto 1fr; /* Sidebar + Main content */
+        }
+
+        .header {
+            background-color: #4CAF50; /* Header background color */
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .menu-icon {
+            cursor: pointer;
+        }
+
+        #sidebar {
+            width: 0; /* Initially hidden */
+            height: 100%;
+            position: fixed; /* Fixed positioning */
+            left: 0;
+            top: 0;
+            background-color: #333; /* Sidebar background color */
+            overflow-x: hidden; /* Prevent horizontal overflow */
+            transition: 0.5s; /* Smooth transition for opening/closing */
+            z-index: 1; /* Keep it on top */
+        }
+
+        .sidebar-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #444; /* Sidebar title background color */
+            color: white;
+        }
+
+        .sidebar-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar-list-item {
+            padding: 15px;
+        }
+
+        .sidebar-list-item a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-list-item a:hover {
+            background-color: #575757; /* Hover effect */
+        }
+
+        .main-container {
+            padding: 20px;
+        }
+
+        .main-title h2 {
+            margin: 0;
+        }
+
+        .main-cards {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 30%;
+            text-align: center;
+        }
+
+        .charts {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .charts-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 48%; /* Adjust width for two charts */
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="menu-icon" onclick="openSidebar()">
+                <span class="material-icons-outlined">menu</span>
+            </div>
+            <div class="header-left">
+                <span class="material-icons-outlined">search</span>
+            </div>
+            <div class="header-right">
+                <span class="material-icons-outlined">notifications</span>
+                <span class="material-icons-outlined">email</span>
+                <span class="material-icons-outlined">account_circle</span>
+            </div>
+        </header>
+        <!-- End Header -->
+
+        <!-- Sidebar -->
+        <aside id="sidebar">
+            <div class="sidebar-title">
+                <div class="sidebar-brand">
+                    <span class="material-icons-outlined">shopping_cart</span> STORE
+                </div>
+                <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+            </div>
+
+            <ul class="sidebar-list">
+                <li class="sidebar-list-item">
+                    <a href="../index.html">
+                        <span class="material-icons-outlined">dashboard</span> Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="products.html">
+                        <span class="material-icons-outlined">inventory_2</span> Products
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="categories.html">
+                        <span class="material-icons-outlined">category</span> Categories
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="inventory.html">
+                        <span class="material-icons-outlined">fact_check</span> Inventory
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="reports.html">
+                        <span class="material-icons-outlined">poll</span> Reports
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="settings.html">
+                        <span class="material-icons-outlined">settings</span> Settings
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        <!-- End Sidebar -->
+
+        <main class="main-container">
+            <div class="main-title">
+                <h2>WELCOME TO THE ADMIN DASHBOARD</h2>
+            </div>
+            <p>Select a section from the sidebar to manage your store.</p>
+
+            <div class="main-cards">
+                <div class="card">
+                    <div class="card-inner">
+                        <h3>PRODUCTS</h3>
+                        <span class="material-icons-outlined">inventory_2</span>
+                    </div>
+                    <h1>0</h1>
+                </div>
+                <!-- Additional Cards Here -->
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts">
+                <div class="charts-card">
+                    <h2 class="chart-title">Male and Female</h2>
+                    <div id="bar-chart"></div>
+                </div>
+                <div class="charts-card">
+                    <h2 class="chart-title">Viewer</h2>
+                    <div id="area-chart"></div>
+                </div>
+            </div>
+        </main>
+        <!-- End Main -->
+    </div>
+
+    <!-- Load ApexCharts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
+    
+    <script>
+        // Initialize Charts
+        var barOptions = {
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            series: [{
+                name: 'Units Sold',
+                data: [44, 55] // Sample data for products
+            }],
+            xaxis: {
+                categories: ['Male', 'Female']
+            },
+            title: {
+                text: 'Product Distribution'
+            }
+        };
+        var barChart = new ApexCharts(document.querySelector("#bar-chart"), barOptions);
+        barChart.render();
+
+        var areaOptions = {
+            chart: {
+                type: 'area',
+                height: 350
+            },
+            series: [{
+                name: 'Male',
+                data: [31, 40, 28, 51, 42, 109, 100]
+            }, {
+                name: 'Female',
+                data: [11, 32, 45, 32, 34, 52, 41]
+            }],
+            xaxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
+            },
+            title: {
+                text: 'Viewer Distribution'
+            }
+        };
+        var areaChart = new ApexCharts(document.querySelector("#area-chart"), areaOptions);
+        areaChart.render();
+
+        // Scripts for opening and closing sidebar
+        function openSidebar() {
+            document.getElementById('sidebar').style.width = '250px'; // Set the width for opening
+            document.body.style.marginLeft = '250px'; // Shift main content
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').style.width = '0'; // Hide the sidebar
+            document.body.style.marginLeft = '0'; // Shift main content back
+        }
+    </script>
+
+    <script src="../js/scripts.js"></script>
+</body>
+</html>
